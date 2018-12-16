@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: http-echo
+  labels:
+    app: http-echo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: http-echo
+  template:
+    metadata:
+      labels:
+        app: http-echo
+    spec:
+      containers:
+      - name: application1
+        image: hashicorp/http-echo 
+        imagePullPolicy: Always 
+        args: ["-text='Hello World'"]
+        ports:
+          - name: app1
+            containerPort: 5678
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello-service
+spec:
+  ports:
+  - port: 8080 
+    targetPort: 5678 
+  selector:
+    app: http-echo 
