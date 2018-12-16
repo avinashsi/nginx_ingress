@@ -61,6 +61,7 @@ http://mkube.test.com  It gets redirected to - > https://mkube.test.com
 ```
 
 Details Explained Below.
+---------------
 
 Vagrant provisions the box through following script defined below.
 
@@ -247,6 +248,7 @@ http://mkube.test.com  It gets redirected to - > https://mkube.test.com
 ----
 
 Attaching few  screenshots of the Dashboard
+---------------
 
 ![alt text](https://raw.githubusercontent.com/avinashsi/nginx_ingress/master/Images/dash1.png)
 
