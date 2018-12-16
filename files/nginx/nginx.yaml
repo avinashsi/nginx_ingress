@@ -25,8 +25,8 @@ spec:
     configMap:
       name: nginx-conf
   - name: nginx-ssl-certs
-    hostPath:
-      path: /home/vagrant/files/ssl/
+    secret:
+      secretName: tls-certificate
 
 ---
 kind: Service
