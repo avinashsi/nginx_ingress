@@ -46,8 +46,23 @@ vagrant up
 
 ```
 Vagrant will startup a VM in your local workstation with the image you have imported
-and start up the MiniKube inside it by using the bootstrap script -bootstrap.sh as mentioned in the Vagrantfile.
+and start up the MiniKube inside it by using the bootstrap script -bootstrap.sh as mentioned in the Vagrantfile and application_provision.sh will provision kubernetes pods and services. Just do the following step to access your application from browser.
 
+```
+C:\Windows\System32\drivers\etc\hosts
+Add the following line at the end of the file and save it
+192.168.111.40    mkube.test.com
+```
+The ip and hostname one above was defined in Vagrantfile through which this instance was created.
+Go to the browser on your system and type in the following url to access the application.
+
+```
+http://mkube.test.com  It gets redirected to - > https://mkube.test.com  
+```
+
+Details Explained Below.
+
+Vagrant provisions the box through following script defined below.
 
 ```
 mkube.vm.provision "shell" , path: "bootstrap.sh"
@@ -150,12 +165,9 @@ data:
                 }
          }
 
-
-      }
-
 ```
 Terminating the ssl connection in configuration.
-Mapping the '/' to hello-service which is mapped to helloworld pod.
+Mapping the following path '/' to hello-service which is mapped to helloworld pod.
 
 Now create the nginx ConfigMap and nginx Pod which will use this ConfigMap.
 
@@ -225,7 +237,6 @@ Add the following line at the end of the file and save it
 ```
 
 The ip and hostname one above was defined in Vagrantfile through which this instance was created.
-
 Go to the browser on your system and type in the following url to access the application.
 
 ```
@@ -234,4 +245,15 @@ http://mkube.test.com  It gets redirected to - > https://mkube.test.com
 ![alt text](https://raw.githubusercontent.com/avinashsi/nginx_ingress/master/Images/helloworld.png)
 
 ----
-Summary .
+
+Attaching few  screenshots of the Dashboard
+
+![alt text](https://raw.githubusercontent.com/avinashsi/nginx_ingress/master/Images/dash1.png)
+
+![alt text](https://raw.githubusercontent.com/avinashsi/nginx_ingress/master/Images/dash2.png)
+
+![alt text](https://raw.githubusercontent.com/avinashsi/nginx_ingress/master/Images/dash3.png)
+
+![alt text](https://raw.githubusercontent.com/avinashsi/nginx_ingress/master/Images/dash4.png)
+
+![alt text](https://raw.githubusercontent.com/avinashsi/nginx_ingress/master/Images/dash5.png)

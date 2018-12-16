@@ -74,3 +74,8 @@ minikube service list
 minikube addons enable ingress
 minikube addons enable heapster
 ##################################################################################
+
+
+###Pull docker Image################
+docker pull avinashsi/nginx:V1.2
+###################################

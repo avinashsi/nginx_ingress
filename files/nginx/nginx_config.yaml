@@ -32,8 +32,7 @@ data:
                 proxy_pass         http://hello-service:8080/;
                 proxy_redirect     off;
                   }
-                }
+              }
          }
 
 
-      }
