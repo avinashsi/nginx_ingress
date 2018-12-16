@@ -128,7 +128,7 @@ readinessProbe:
 
 ```
 
-Atlease wait for 250 seconds the pod will be up and ready and to accept connection.
+Wait for 250 seconds the pod will be up and ready and to accept connection.
 
 Running the get pods command again
 
@@ -145,20 +145,16 @@ Now helloworld application is up.
 
 Now  lets map a frontend Nginx in front of it.
 
-We will compile the Docker Images. But for this case we have already pushed the image
-to docker repository.
+We will compile the Docker file to build Docker Image. But for this case we have already pushed the image
+to docker repository so need to the following step. It is Just for reference.
 
 Login in machine and run the following command to build docker image
 
 ```
-
 cd /vagrant/files/Nginx_Dockerfile
 docker build -t avinashsi/nginx:V1.2 .
 docker push avinashsi/nginx:V1.2
 ```
-Note: Please don't run this command as the image is already pushed in docker hub.
-It gets automatically pulled when we create pods.
-
 
 Now you are good to go lets configure the Nginx configuration using ConfigMap as shown.
 
@@ -226,7 +222,8 @@ http-echo-5744bdbf87-nfm87   1/1     Running   0          16m   172.17.0.9    mi
 http-echo-5744bdbf87-st8xw   1/1     Running   0          16m   172.17.0.8    minikube
 
 ```
-This one also may take time to come up because of readinessProbe defined.
+This one also may take time to come up because of readinessProbe defined in
+/vagrant/files/nginx/nginx.yaml file.
 
 Now we need to expose this via url to outside world which requires in Kubernetes.
 Since we are running Minikube version of Kubernetes so we neeed to enable this feature.
