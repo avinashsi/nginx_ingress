@@ -16,12 +16,30 @@ spec:
     spec:
       containers:
       - name: application1
-        image: hashicorp/http-echo 
-        imagePullPolicy: Always 
+        image: hashicorp/http-echo
+        imagePullPolicy: Always
         args: ["-text='Hello World'"]
         ports:
           - name: app1
             containerPort: 5678
+        livenessProbe:
+          tcpSocket:
+            port: 5678
+          initialDelaySeconds: 150
+          periodSeconds: 20
+        readinessProbe:
+          tcpSocket:
+            port: 5678
+          initialDelaySeconds: 250
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 10m
+            memory: 20Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+
 ---
 kind: Service
 apiVersion: v1
@@ -29,7 +47,7 @@ metadata:
   name: hello-service
 spec:
   ports:
-  - port: 8080 
-    targetPort: 5678 
+  - port: 8080
+    targetPort: 5678
   selector:
-    app: http-echo 
+    app: http-echo

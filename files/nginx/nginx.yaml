@@ -14,6 +14,11 @@ spec:
     - containerPort: 443
       name: https
       protocol: TCP
+    readinessProbe:
+      tcpSocket:
+        port: 443
+      initialDelaySeconds: 300
+      periodSeconds: 10
     volumeMounts:
     - name: nginx-proxy-config
       mountPath: /etc/nginx/nginx.conf
@@ -27,7 +32,6 @@ spec:
   - name: nginx-ssl-certs
     hostPath:
       path: /home/vagrant/files/ssl/
-
 ---
 kind: Service
 apiVersion: v1

@@ -45,6 +45,7 @@ Now browse to the repo folder cd nginx_ingress and run following command
 vagrant up
 
 ```
+
 Vagrant will startup a VM in your local workstation with the image you have imported
 and start up the MiniKube inside it by using the bootstrap script -bootstrap.sh as mentioned in the Vagrantfile and application_provision.sh will provision kubernetes pods and services. Just do the following step to access your application from browser.
 
@@ -56,12 +57,17 @@ Add the following line at the end of the file and save it
 The ip and hostname one above was defined in Vagrantfile through which this instance was created.
 Go to the browser on your system and type in the following url to access the application.
 
+
 ```
 http://mkube.test.com  It gets redirected to - > https://mkube.test.com  
 ```
 
-Details Explained Below.
----------------
+Note: Please go and grab some coffee at this steps it will take some time at least
+15-20 minutes to show Hello World on browser.
+I have added the log kube.log as reference.
+
+Details Steps Explained Below.
+===
 
 Vagrant provisions the box through following script defined below.
 
@@ -93,19 +99,47 @@ You can check the application status by running the following command.
 ```
 [root@mkube vagrant]# kubectl get pods -o wide
 NAME                         READY   STATUS    RESTARTS   AGE   IP            NODE
-http-echo-796bb65f69-4528c   1/1     Running   0          5h    172.17.0.9    minikube
-http-echo-796bb65f69-6p5vm   1/1     Running   0          5h    172.17.0.10   minikube
-http-echo-796bb65f69-6pmj4   1/1     Running   0          5h    172.17.0.8    minikube
+http-echo-796bb65f69-4528c   0/1     Running   0          5h    172.17.0.9    minikube
+http-echo-796bb65f69-6p5vm   0/1     Running   0          5h    172.17.0.10   minikube
+http-echo-796bb65f69-6pmj4   0/1     Running   0          5h    172.17.0.8    minikube
 
 ```
 
-As you can see we have 3 instances of the helloworld pods runing in as
+As you can see we have 3 instances of the helloworld pods  running in as
 we defined 3 replicas in following file
 
 ```
 spec:
   replicas: 3
 ```
+But status shows
+```
+0/1
+```
+This means the pods is up but not ready to accept connections this is because of the following
+configuration
+
+```
+readinessProbe:
+  tcpSocket:
+    port: 5678
+  initialDelaySeconds: 250
+  periodSeconds: 10
+
+```
+
+Atlease wait for 250 seconds the pod will be up and ready and to accept connection.
+
+Running the get pods command again
+
+```
+[root@mkube vagrant]# kubectl get pods -o wide
+NAME                         READY   STATUS    RESTARTS   AGE   IP            NODE
+http-echo-5744bdbf87-5cm5f   1/1     Running   0          16m   172.17.0.10   minikube
+http-echo-5744bdbf87-nfm87   1/1     Running   0          16m   172.17.0.9    minikube
+http-echo-5744bdbf87-st8xw   1/1     Running   0          16m   172.17.0.8    minikube
+```
+
 
 Now helloworld application is up.
 
@@ -180,6 +214,19 @@ kubectl create -f /home/vagrant/files/nginx.yaml
 Note: These will be automatically created with application_provision.sh at the machine boot up
 so no need to run them.
 
+
+Check the pods status
+
+```
+[root@mkube vagrant]# kubectl get pods -o wide
+NAME                         READY   STATUS    RESTARTS   AGE   IP            NODE
+frontend                     0/1     Running   0          16m   172.17.0.11   minikube
+http-echo-5744bdbf87-5cm5f   1/1     Running   0          16m   172.17.0.10   minikube
+http-echo-5744bdbf87-nfm87   1/1     Running   0          16m   172.17.0.9    minikube
+http-echo-5744bdbf87-st8xw   1/1     Running   0          16m   172.17.0.8    minikube
+
+```
+This one also may take time to come up because of readinessProbe defined.
 
 Now we need to expose this via url to outside world which requires in Kubernetes.
 Since we are running Minikube version of Kubernetes so we neeed to enable this feature.
