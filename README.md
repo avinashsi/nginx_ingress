@@ -66,7 +66,7 @@ Note: Please go and grab some coffee at this steps it will take some time at lea
 15-20 minutes to show Hello World on browser.
 I have added the log kube.log as reference.
 
-Details Steps Explained Below.
+Detailed Steps Explained Below.
 ===
 
 Vagrant provisions the box through following script defined below.
